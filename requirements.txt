@@ -1,0 +1,8 @@
+discord.py
+asyncio
+pillow
+psutil
+datetime
+requests
+disputils
+jishaku
