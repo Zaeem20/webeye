@@ -25,7 +25,7 @@ Tools.__exit__()
 ```
 # custom things
 
-## custom loops
+## custom Loops
 ```py
 Tools=Webeye(loop=your_loop)
 ```
@@ -33,3 +33,5 @@ Tools=Webeye(loop=your_loop)
 ```py
 Tools=Webeye(session=session)
 ```
+# Support
+Join the [support discord server here](https://discord.gg/xmu36SbCXC)
