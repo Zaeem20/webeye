@@ -1,8 +1,13 @@
 from setuptools import setup
 
+with open("README.md", "r", encoding="utf-8") as f:
+    readme = f.read()
+
 setup(
   name='webeye',
-  version='0.1',
+  version='0.1.0',
+  long_description=readme,
+  long_description_content_type="text/markdown",
   description='A best Powerful module for making ethical hacking tools easier',
   url='https://github.com/Zaeem20/webeye',
   author="Zaeem Technical",
