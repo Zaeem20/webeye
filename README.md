@@ -10,6 +10,8 @@ Tools=Webeye()
 run = Tools.ses.run
 # host 
 host="quotientbot.xyz"
+# schema
+schema="https://"
 # subdomains
 subdomains=run(Tools.subenum(host=host))
 # dns lookup
@@ -19,7 +21,7 @@ grabbed=run(Tools.grab(host=host))
 # check for ports
 ports=run(Tools.portscan(host=host))
 # cloudflare
-detected=run(Tools.cloudflare(host=host))
+detected=run(Tools.cloudflare(host=schema+host))
 # stopping the session
 Tools.__exit__()
 ```
@@ -31,7 +33,7 @@ Tools=Webeye(loop=your_loop)
 ```
 ## custom Sessions
 ```py
-Tools=Webeye(session=session)
+Tools=Webeye(session=your_session)
 ```
 # Support
 Join the [support discord server here](https://discord.gg/xmu36SbCXC)
