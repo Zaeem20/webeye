@@ -1,5 +1,10 @@
 # webeye
 A Best Powerful module for making ethical hacking tools easier<br />
+
+# Installation
+```sh
+pip install -U webeye
+```
 # Getting Started
 ```py
 # importing
@@ -17,13 +22,12 @@ subdomains=run(Tools.subenum(host=host))
 # dns lookup
 dns=run(Tools.dns(host=host))
 # banner grabber
-grabbed=run(Tools.grab(host=host))
+grabbed=run(Tools.grab(host=schema+host))
 # check for ports
 ports=run(Tools.portscan(host=host))
 # cloudflare
 detected=run(Tools.cloudflare(host=schema+host))
-# stopping the session
-Tools.__exit__()
+
 ```
 # custom things
 
@@ -36,4 +40,4 @@ Tools=Webeye(loop=your_loop)
 Tools=Webeye(session=your_session)
 ```
 # Support
-Join the [support discord server here](https://discord.gg/xmu36SbCXC)
+Join the support [discord server here](https://discord.gg/xmu36SbCXC)
