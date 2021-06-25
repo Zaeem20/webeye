@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 class Session:
-	"""A Session for webeye"""
+	""""A Session for webeye""""
 	def __init__(self, loop=asyncio.get_event_loop(), session=aiohttp.ClientSession, *args, **kwargs):
 		self.loop = loop
 		self.run = self.loop.run_until_complete
