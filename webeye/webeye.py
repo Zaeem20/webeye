@@ -1,3 +1,5 @@
+import socket
+from concurrent.futures import ThreadPoolExecutor
 from .session import Session
 
 '''
@@ -43,14 +45,27 @@ class Webeye:
 		lines = out.split("\n")
 		return list(line for line in lines)
 
-	async def portscan(self, host):
-		"""basic port scanner just send list of open/closed ports"""
-		async with self.session() as req:
-			api = await req.get(f"https://api.hackertarget.com/nmap/?q={host}")
-			out = await api.text()
-			await req.close()
-		return out
-
+# 	def scan_port(target, start=0 , port):
+# 		'''port scanner in python'''
+# 		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#   	  	sock.settimeout(0.5)
+# 		realip = socket.gethostbyname(target)
+# 		try:
+#   			conn = sock.connect_ex((realip, port))
+#   			if not conn:
+#     			print(f"Port {port}/{socket.getservbyport(port)} : OPEN")
+#   			sock.close()
+# 		except socket.gaierror:
+# 			print('Unable to connect With Host')
+# 			sys.exit()
+# 		except Exception as e:
+# 			print(f'Something Went Wrong\nError:- {e}')
+# 		def runner():
+#  			with ThreadPoolExecutor(max_workers=port*10) as group:
+#     			group.map(scan_port, range(start, port+1))
+# 		runner()
+		
+		
 	async def grab(self, host):
 		'''banner grabber'''
 		req = self.session()
