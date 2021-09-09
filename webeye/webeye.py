@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-def scan(target, port: int, start: Optional[int]=0, dev_mode=False):
+def scan(target: str, port: int, start: Optional[int]=0, dev_mode=False):
     list = []
     on = time.time()
     def scan_port(port) -> int: 
@@ -66,7 +66,7 @@ def grab(host: str, schema: Optional[str]='http://') -> dict:
 #     api =  requests.get(f"https://api.hackertarget.com/whois/?q={host}")
 #     return api.text
 
-def is_cloudflare(host, schema='http://'):
+def is_cloudflare(host: str, schema='http://'):
     """Checks for cloudflare"""
     target = requests.get(schema+host)
     o = target.headers
