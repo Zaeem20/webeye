@@ -8,36 +8,24 @@ pip install -U webeye
 # Getting Started
 ```py
 # importing
-from webeye import Webeye
-# configuring
-Tools=Webeye()
-# tool for running coroutines
-run = Tools.ses.run
+from webeye import *
 # host 
 host="quotientbot.xyz"
 # schema
 schema="https://"
 # subdomains
-subdomains=run(Tools.subenum(host=host))
+subdomains=subenum(host=host)
 # dns lookup
-dns=run(Tools.dns(host=host))
+dns=dns(host=host)
 # banner grabber
-grabbed=run(Tools.grab(host=schema+host))
+grabbed=grab(host=host,schema=schema)
 # check for ports
-ports=run(Tools.scan(host=host, end=500, start=0, dev_mode = False)
+ports=scan(host=host, end=500, start=0, dev_mode = False)
 # cloudflare
-detected=run(Tools.cloudflare(host=schema+host))
+detected=cloudflare(host=host, schema=schema)
 
 ```
-# custom things
 
-## custom Loops
-```py
-Tools=Webeye(loop=your_loop)
-```
-## custom Sessions
-```py
-Tools=Webeye(session=your_session)
-```
+
 # Support
 Join the support [discord server here](https://discord.gg/xmu36SbCXC)
