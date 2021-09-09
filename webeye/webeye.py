@@ -1,7 +1,7 @@
 import socket, time
 from typing import Optional
 from concurrent.futures import ThreadPoolExecutor
-from .session import Session
+import requests
 
 '''
 MIT License
@@ -23,83 +23,67 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
+def scan(target, port: int, start: Optional[int]=0, dev_mode=False):
+    list = []
+    on = time.time()
+    def scan_port(port) -> int: 
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(1)
+        conn = sock.connect_ex((socket.gethostbyname(target), port))
+        if not conn:
+            if dev_mode:
+                list.append(f'{port}/{socket.getservbyport(port)}')
+            else:
+                print(f'OPEN_STATE: {port}/{socket.getservbyport(port)}')
+        sock.close()
+    def execute():
+        with ThreadPoolExecutor(max_workers=1000) as host:
+            host.map(scan_port, range(start, port))
+            if not dev_mode:
+                return f'\nScan done: 1 IP address (1 host up) scanned in {round(time.time()-on, 2)} seconds'
+            else:
+                return f'IP: {socket.gethostbyname(target)}'
+    runner = execute()
+    if dev_mode:
+        return runner,list
+    else:
+        return runner
 
-__all__ = ["Webeye"]
+def subenum(host: str):
+    """gives a list of subdomains for given host"""
+    api = requests.get(f"https://api.hackertarget.com/hostsearch/?q={host}", headers={'Connection':'close'}).text
+    lines = api.split("\n")
+    return list(line for line in lines)
 
+def grab(host: str, schema: Optional[str]='http://') -> dict:
+    '''banner grabber'''
+    api = requests.get(schema+host)
+    return api.headers
 
-class Webeye:
-	"""Main tools of webeye"""
-	def __init__(self, *args, **kwargs):
-		self.ses = Session(*args, **kwargs)
-		self.session = self.ses.session
-		self.__exit__ = self.ses.__exit__
-		self.args = args
-		self.kwargs = kwargs
+#<----- Closed Whois Lookup ---->
 
-	async def subenum(self, host: str):
-		"""gives a list of subdomains for given host"""
-		async with self.session() as req:
-			api = await req.get(
-			    f"https://api.hackertarget.com/hostsearch/?q={host}")
-			out = await api.text()
-			await req.close()
-		lines = out.split("\n")
-		return list(line for line in lines)
+# def whois(host):
+#     api =  requests.get(f"https://api.hackertarget.com/whois/?q={host}")
+#     return api.text
 
-    def scan(self, target, port: int, start: Optional[int]=0, dev_mode: Optional[bool]=False):
-        list = []
-        on = time.time()
-        def scan_port(port) -> int: 
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(1)
-            conn = sock.connect_ex((socket.gethostbyname(target), port))
-            if not conn:
-                if dev_mode:
-                    list.append(f'{port}/{socket.getservbyport(port)}')
-                else:
-                    print(f'OPEN_STATE: {port}/{socket.getservbyport(port)}')
-            sock.close()
-        def execute():
-            with ThreadPoolExecutor(max_workers=1000) as host:
-                host.map(scan_port, range(start, port))
-                if not dev_mode:
-                    return f'\nScan done: 1 IP address (1 host up) scanned in {round(time.time()-on, 2)} seconds'
-                else:
-                    return f'IP: {socket.gethostbyname(target)}'
-        runner = execute()
-        if dev_mode:
-            return runner,list
-        else:
-            return runner
-		
-		
-	async def grab(self, host):
-		'''banner grabber'''
-		req = self.session()
-		api = await req.get(host)
-		await req.close()
-		return api.headers
+def is_cloudflare(host, schema='http://'):
+    """Checks for cloudflare"""
+    target = requests.get(schema+host)
+    o = target.headers
+    return True if o["server"] == "cloudflare" else False
 
-	async def whois(self, host):
-		req = self.session()
-		api = await req.get(f"https://api.hackertarget.com/whois/?q={host}")
-		await req.close()
-		return await api.text()
-
-	async def cloudflare(self, host):
-		"""Checks for cloudflare"""
-		async with self.session() as req:
-			api = await req.get(host)
-			o = api.headers
-			await req.close()
-		return True if o["server"] == "cloudflare" else False
-
-	async def dns(self, host):
-		'''dns lookup'''
-		async with self.session() as req:
-			api = await req.get(
-			    f"https://api.hackertarget.com/dnslookup/?q={host}")
-			o = []
-			await req.close()
-			o.append(await api.text())
-		return o
+def fetch_dns(host: str):
+    '''dns lookup'''
+    api =  requests.get(f"https://api.hackertarget.com/dnslookup/?q={host}",headers={'Connection':'close'}).text
+    result = api.split("\n")
+    return result
+    
+def is_honeypot(host: str):
+    target = socket.gethostbyname(host)
+    honey = f'https://api.shodan.io/labs/honeyscore/{target}?key=C23OXE0bVMrul2YeqcL7zxb6jZ4pj2by'
+    try:
+        result = requests.get(honey, headers={'Connection':'close'}).text
+    except:
+        result = None
+        return 'No information Available for {}'.format(target)
+    return f'Honeypot Probablity: {float(result)*10}%'
