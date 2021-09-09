@@ -15,7 +15,7 @@ setup(
   license='MIT',
   classifiers=["License :: OSI Approved :: MIT License","Programming Language :: Python :: 3.8",],
   python_requires=">=3.8",
-  install_requires=['aiohttp >=3'],
+  install_requires=['requests >= 2'],
   keywords="webeye red_hawk nikto webrecon recondog",
   packages=find_packages(exclude=["docs","test"]),
   data_files=None
