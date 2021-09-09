@@ -16,13 +16,15 @@ schema="https://"
 # subdomains
 subdomains=subenum(host=host)
 # dns lookup
-dns=dns(host=host)
+dns=fetch_dns(host=host)
 # banner grabber
 grabbed=grab(host=host,schema=schema)
 # check for ports
 ports=scan(host=host, end=500, start=0, dev_mode = False)
 # cloudflare
-detected=cloudflare(host=host, schema=schema)
+detected=is_cloudflare(host=host, schema=schema)
+# honeypot
+honeypot=is_honeypot(host=host)
 
 ```
 
