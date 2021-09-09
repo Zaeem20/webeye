@@ -24,7 +24,7 @@ dns=run(Tools.dns(host=host))
 # banner grabber
 grabbed=run(Tools.grab(host=schema+host))
 # check for ports
-ports=run(Tools.portscan(host=host))
+ports=run(Tools.scan(host=host, end=500, start=Optional[int), dev_mode = False)
 # cloudflare
 detected=run(Tools.cloudflare(host=schema+host))
 
