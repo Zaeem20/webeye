@@ -1,4 +1,5 @@
-import socket
+import socket, time
+from typing import Optional
 from concurrent.futures import ThreadPoolExecutor
 from .session import Session
 
@@ -45,25 +46,31 @@ class Webeye:
 		lines = out.split("\n")
 		return list(line for line in lines)
 
-# 	def scan_port(target, start=0 , port):
-# 		'''port scanner in python'''
-# 		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#   	  	sock.settimeout(0.5)
-# 		realip = socket.gethostbyname(target)
-# 		try:
-#   			conn = sock.connect_ex((realip, port))
-#   			if not conn:
-#     			print(f"Port {port}/{socket.getservbyport(port)} : OPEN")
-#   			sock.close()
-# 		except socket.gaierror:
-# 			print('Unable to connect With Host')
-# 			sys.exit()
-# 		except Exception as e:
-# 			print(f'Something Went Wrong\nError:- {e}')
-# 		def runner():
-#  			with ThreadPoolExecutor(max_workers=port*10) as group:
-#     			group.map(scan_port, range(start, port+1))
-# 		runner()
+    def scan(self, target, port: int, start: Optional[int]=0, dev_mode: Optional[bool]=False):
+        list = []
+        on = time.time()
+        def scan_port(port) -> int: 
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(1)
+            conn = sock.connect_ex((socket.gethostbyname(target), port))
+            if not conn:
+                if dev_mode:
+                    list.append(f'{port}/{socket.getservbyport(port)}')
+                else:
+                    print(f'OPEN_STATE: {port}/{socket.getservbyport(port)}')
+            sock.close()
+        def execute():
+            with ThreadPoolExecutor(max_workers=1000) as host:
+                host.map(scan_port, range(start, port))
+                if not dev_mode:
+                    return f'\nScan done: 1 IP address (1 host up) scanned in {round(time.time()-on, 2)} seconds'
+                else:
+                    return f'IP: {socket.gethostbyname(target)}'
+        runner = execute()
+        if dev_mode:
+            return runner,list
+        else:
+            return runner
 		
 		
 	async def grab(self, host):
