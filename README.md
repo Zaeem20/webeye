@@ -24,7 +24,7 @@ ports=scan(host=host, end=500, start=0, dev_mode = False)
 # cloudflare
 detected=is_cloudflare(host=host, schema=schema)
 # honeypot
-honeypot=is_honeypot(host=host)
+honeypot=is_honeypot(host=host, score=False)
 
 ```
 
