@@ -20,13 +20,74 @@ dns=fetch_dns(host=host)
 # banner grabber
 grabbed=grab(host=host,schema=schema)
 # check for ports
-ports=scan(host=host, end=500, start=0, dev_mode = False)
+ports=scan(host=host, port=1025, start=0, dev_mode = False)
 # cloudflare
 detected=is_cloudflare(host=host, schema=schema)
 # honeypot
-honeypot=is_honeypot(host=host, score=False)
+honeypot=is_honeypot(host=host)
 
 ```
+
+# Custom Things
+You can also scan specific ports Iterable type args can also be added...</br>
+
+```py
+webeye.scan('google.com', [21,80,443])
+
+```
+
+You can get IP address of subdomain too...
+
+```py
+print(webeye.subenum(target, no_ip=False))
+
+```
+# Webeye as Asynchronous
+
+```py
+from webeye import AsyncHelper
+
+asyncmanner = AsyncHelper()
+
+async def portscan(target):
+    await asyncmanner.scan(target, 1024)
+
+async def reversedns(target):
+    await asyncmanner.reversedns(target)
+
+async def extract_pagelink(target):
+    await asyncmanner.extract_pagelink(target)
+
+async def shared_dns(target):
+    await asyncmanner.fetch_shared_dns(target)
+
+async def bannergrabber(target):
+    await asyncmanner.grab(target)
+
+async def geoip(target);
+    await asyncmanner.geoip(target)
+
+async def find_subdomains(target):
+    await asyncmanner.find_subdomains(target)
+
+async def dnslook(target):
+    await asyncmanner.fetch_dns(target)
+
+async def reversiplook(target):
+    await asyncmanner.reverseip(target)
+
+async def is_cloudflare(target):
+    await asyncmanner.is_cloudflare(target)
+
+async def is_honeypot(target):
+    await asyncmanner.is_honeypot(target)
+
+```
+
+# Webeye as CLI
+
+https://user-images.githubusercontent.com/60778335/136656370-81966e65-a42d-457d-a8e1-bdab1a446dea.png
+
 
 
 # Support
