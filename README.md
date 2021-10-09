@@ -1,11 +1,11 @@
 # webeye
 A Best Powerful module for making ethical hacking tools easier<br />
 
-# Installation
+## Installation
 ```sh
 pip install -U webeye
 ```
-# Getting Started
+## Getting Started
 ```py
 # importing
 from webeye import *
@@ -28,7 +28,7 @@ honeypot=is_honeypot(host=host)
 
 ```
 
-# Custom Things
+## Custom Things
 You can also scan specific ports Iterable type args can also be added...</br>
 
 ```py
@@ -42,7 +42,7 @@ You can get IP address of subdomain too...
 print(webeye.subenum(target, no_ip=False))
 
 ```
-# Webeye as Asynchronous
+## Webeye as Asynchronous
 
 ```py
 from webeye import AsyncHelper
@@ -84,11 +84,11 @@ async def is_honeypot(target):
 
 ```
 
-# Webeye as CLI
+## Webeye as CLI
 
 ![image](https://user-images.githubusercontent.com/60778335/136659151-238b96b1-6cf5-4c32-a5e1-f11454e6ed82.png)
 
 
 
-# Support
+## Support
 Join the support [discord server here](https://discord.gg/xmu36SbCXC)
