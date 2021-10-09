@@ -9,6 +9,7 @@ setup(
     long_description=readme,
     long_description_content_type="text/markdown",
     description='A best Powerful module for making ethical hacking tools easier',
+    entry_points={"console_scripts": ["webeye=webeye:main"]},
     url='https://github.com/Zaeem20/webeye',
     author="Zaeem Technical",
     author_email='business@zaeemtechnical.ml',
