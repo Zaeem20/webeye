@@ -1,7 +1,7 @@
 from .handler import *
 
 __name__ = "webeye"
-__version__ = "2.1.3"
+__version__ = "2.1.4"
 __author__ = "Zaeem Technical"
 __helper__ = "Rishi Raj"
 __github__ = "https://github.com/Zaeem20/webeye/"
