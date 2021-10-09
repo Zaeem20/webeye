@@ -1,5 +1,5 @@
 # webeye
-A Best Powerful module for making ethical hacking tools easier<br />
+A Best Powerful module for making Ethical hacking tools easier<br />
 
 ## Installation
 ```sh
