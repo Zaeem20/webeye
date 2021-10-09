@@ -1,4 +1,4 @@
-from .webeye import *
+from .handler import *
 
 __name__ = "webeye"
 __version__ = "2.1.2"

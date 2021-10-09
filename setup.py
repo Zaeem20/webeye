@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 setup(
     name='webeye',
-    version='2.1.1',
+    version='2.1.2',
     long_description=readme,
     long_description_content_type="text/markdown",
     description='A best Powerful module for making ethical hacking tools easier',
