@@ -3,7 +3,7 @@ from core.handler import *
 
 
 def main():
-    __version__= '2.1.2'
+    __version__= '2.1.5'
     __author__ = 'Zaeem Techical'
 
     logo = '''
