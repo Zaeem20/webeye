@@ -1,5 +1,20 @@
 # webeye
-A Best Powerful module for making Ethical hacking tools easier<br />
+A Powerful Library for making ethical-hacking/pen-testing tools<br />
+At your fingertips, just in 3-5 lines of code...
+
+## Features
+
+• Subdomain Enumerator
+• Port scanner
+• ReverseDNS Lookup
+• ReversIP Lookup
+• Banner Grabber
+• Cloudflare Detector
+• Honeypot Detector (Based on Honeyscore)
+• Pagelinks Extractor
+• Shared DNS Scanner
+• DNS Lookup
+• Geo-IP Lookup
 
 ## Installation
 ```sh
@@ -8,9 +23,9 @@ pip install -U webeye
 ## Getting Started
 ```py
 # importing
-from webeye import *
+from webeye.core import *
 # host 
-host="quotientbot.xyz"
+host="google.com'
 # schema
 schema="https://"
 # subdomains
@@ -86,7 +101,7 @@ async def is_honeypot(target):
 
 ## Webeye as CLI
 
-![image](https://user-images.githubusercontent.com/60778335/137201597-d5d3310c-67c0-42c7-93ea-06f8a1325d2d.png)
+![image](https://user-images.githubusercontent.com/60778335/137210438-99068c81-4924-4f9a-b856-c265e76671d7.png)
 
 ## Support
 Join the support [discord server here](https://discord.gg/xmu36SbCXC)
