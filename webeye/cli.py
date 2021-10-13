@@ -1,5 +1,5 @@
 import argparse, requests
-from .core import *
+from core import *
 import os
 
 def read(rel_path: str) -> str:
