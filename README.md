@@ -64,7 +64,7 @@ async def shared_dns(target):
 async def bannergrabber(target):
     await asyncmanner.grab(target)
 
-async def geoip(target);
+async def geoip(target):
     await asyncmanner.geoip(target)
 
 async def find_subdomains(target):
