@@ -31,6 +31,7 @@ setup(
     license='MIT',
     classifiers=[
         "License :: OSI Approved :: MIT License",
+        "Environment :: Web Environment",
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'Operating System :: OS Independent',
@@ -38,7 +39,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.6"],
     python_requires=">=3.6",
-    install_requires=['requests >= 2','httpx == 0.19.0'],
+    install_requires=['requests >= 2','httpx == 0.20.0'],
     keywords="webeye red_hawk nikto webrecon recondog",
     packages=find_packages(exclude=["docs","tests"]),
     data_files=None
