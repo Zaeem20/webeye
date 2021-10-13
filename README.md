@@ -1,20 +1,21 @@
-# webeye
+# Webeye
 A Powerful Library for making ethical-hacking/pen-testing tools<br />
-At your fingertips, just in 3-5 lines of code...
+At your Fingertips, just in 3-5 lines of code...
 
 ## Features
 
-• Subdomain Enumerator
-• Port scanner
-• ReverseDNS Lookup
-• ReversIP Lookup
-• Banner Grabber
-• Cloudflare Detector
-• Honeypot Detector (Based on Honeyscore)
-• Pagelinks Extractor
-• Shared DNS Scanner
-• DNS Lookup
-• Geo-IP Lookup
+• Subdomain Enumerator<br />
+• Port scanner<br />
+• ReverseDNS Lookup<br />
+• ReversIP Lookup<br />
+• Banner Grabber<br />
+• Cloudflare Detector<br />
+• Honeypot Detector (Based on Honeyscore)<br />
+• Pagelinks Extractor<br />
+• Shared DNS Scanner<br />
+• DNS Lookup<br />
+• Geo-IP Lookup<br />
+
 
 ## Installation
 ```sh
@@ -101,7 +102,7 @@ async def is_honeypot(target):
 
 ## Webeye as CLI
 
-![image](https://user-images.githubusercontent.com/60778335/137210438-99068c81-4924-4f9a-b856-c265e76671d7.png)
+![image](https://user-images.githubusercontent.com/60778335/137212470-c0326195-5fc5-4112-8587-1dbb09e3c0b9.png)
 
 ## Support
 Join the support [discord server here](https://discord.gg/xmu36SbCXC)
