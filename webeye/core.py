@@ -2,7 +2,6 @@ import socket
 import time
 import sys
 import httpx
-import argparse
 import requests
 import json as _json
 from httpx import AsyncClient
