@@ -1,5 +1,5 @@
 import argparse, requests
-from handler import *
+from .handler import *
 
 
 def main():
