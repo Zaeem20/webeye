@@ -1,0 +1,11 @@
+README.md
+setup.py
+webeye/__init__.py
+webeye/cli.py
+webeye/core.py
+webeye.egg-info/PKG-INFO
+webeye.egg-info/SOURCES.txt
+webeye.egg-info/dependency_links.txt
+webeye.egg-info/entry_points.txt
+webeye.egg-info/requires.txt
+webeye.egg-info/top_level.txt
