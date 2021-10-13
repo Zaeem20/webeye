@@ -241,6 +241,9 @@ def is_honeypot(host: str, score: bool=False):
 
 # Async helper
 class AsyncHelper:
+    '''
+    With AsyncHelper you can get response Asynchronously...
+    '''
     async def extract_pagelinks(self, host: str, cli=False) -> Union[None, list]:
         '''Extract All Pagelinks From Website Asynchronously'''
         async with AsyncClient() as session:
