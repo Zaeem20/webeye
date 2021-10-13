@@ -29,7 +29,7 @@ honeypot=is_honeypot(host=host)
 ```
 
 ## Custom Things
-You can also scan specific ports Iterable type args can also be added...</br>
+You can also scan specific ports, Iterable type args can also be added...</br>
 
 ```py
 webeye.scan('google.com', [21,80,443])
@@ -64,7 +64,7 @@ async def shared_dns(target):
 async def bannergrabber(target):
     await asyncmanner.grab(target)
 
-async def geoip(target);
+async def geoip(target):
     await asyncmanner.geoip(target)
 
 async def find_subdomains(target):
