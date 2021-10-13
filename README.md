@@ -5,15 +5,25 @@ At your fingertips, just in 3-5 lines of code...
 ## Features
 
 • Subdomain Enumerator
+
 • Port scanner
+
 • ReverseDNS Lookup
+
 • ReversIP Lookup
+
 • Banner Grabber
+
 • Cloudflare Detector
+
 • Honeypot Detector (Based on Honeyscore)
+
 • Pagelinks Extractor
+
 • Shared DNS Scanner
+
 • DNS Lookup
+
 • Geo-IP Lookup
 
 ## Installation
