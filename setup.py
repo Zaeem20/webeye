@@ -20,7 +20,7 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 setup(
     name='webeye',
-    version=get_version('core/__init__.py'),
+    version=get_version('webeye/__init__.py'),
     long_description=readme,
     long_description_content_type="text/markdown",
     entry_points={'console_scripts':['webeye=core.cli:main']},
