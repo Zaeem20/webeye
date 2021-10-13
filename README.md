@@ -15,10 +15,6 @@ At your Fingertips, just in 3-5 lines of code...
 • Shared DNS Scanner<br />
 • DNS Lookup<br />
 • Geo-IP Lookup<br />
-<<<<<<< HEAD
-
-=======
->>>>>>> 093ce0ebaafd73d31a8ed214ab61d9b2f3f7cca9
 
 ## Installation
 ```sh
@@ -108,4 +104,4 @@ async def is_honeypot(target):
 ![image](https://user-images.githubusercontent.com/60778335/137212470-c0326195-5fc5-4112-8587-1dbb09e3c0b9.png)
 
 ## Support
-Join the support [discord server here](https://discord.gg/xmu36SbCXC)
+• **[Discord](https://discord.gg/xmu36SbCXC)**
