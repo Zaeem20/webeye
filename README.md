@@ -1,4 +1,4 @@
-# webeye
+# Webeye
 A Powerful Library for making ethical-hacking/pen-testing tools<br />
 At your fingertips, just in 3-5 lines of code...
 
