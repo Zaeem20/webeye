@@ -15,7 +15,10 @@ At your Fingertips, just in 3-5 lines of code...
 • Shared DNS Scanner<br />
 • DNS Lookup<br />
 • Geo-IP Lookup<br />
+<<<<<<< HEAD
 
+=======
+>>>>>>> 093ce0ebaafd73d31a8ed214ab61d9b2f3f7cca9
 
 ## Installation
 ```sh
