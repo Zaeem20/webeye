@@ -56,7 +56,7 @@ def reversedns(host: str) -> str:
     api =  requests.get(f'https://api.hackertarget.com/reversedns/?q={realip}').text.strip(f'{realip} ')
     return api
 
-def scan(target: str, port: Union[int, Iterable], start: int=0, dev_mode: bool=False, api :bool=False):
+def scan(target: str, port: Union[int, Iterable], start: int=0, dev_mode: bool=False, api :bool=False) -> Union[tuple,None]:
     '''Python Port Scanner Enumerate all Open Ports of Given Host:\n
     Use dev_mode = True,  if You want response in list.\n
     Use API = True if you are making api
