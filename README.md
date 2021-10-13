@@ -86,7 +86,7 @@ async def is_honeypot(target):
 
 ## Webeye as CLI
 
-![image](https://user-images.githubusercontent.com/60778335/137102288-40b6f049-9be8-4346-89e5-8a95032850b0.png)
+![image](https://user-images.githubusercontent.com/60778335/137201597-d5d3310c-67c0-42c7-93ea-06f8a1325d2d.png)
 
 ## Support
 Join the support [discord server here](https://discord.gg/xmu36SbCXC)
