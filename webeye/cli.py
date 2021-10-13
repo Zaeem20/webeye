@@ -1,5 +1,5 @@
 import argparse, requests
-from .core import *
+from webeye.core import *
 
 
 def main():
