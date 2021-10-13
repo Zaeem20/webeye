@@ -29,7 +29,7 @@ honeypot=is_honeypot(host=host)
 ```
 
 ## Custom Things
-You can also scan specific ports Iterable type args can also be added...</br>
+You can also scan specific ports, Iterable type args can also be added...</br>
 
 ```py
 webeye.scan('google.com', [21,80,443])
