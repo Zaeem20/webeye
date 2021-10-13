@@ -1,13 +1,29 @@
 from setuptools import setup, find_packages
+import os
+
+def read(rel_path: str) -> str:
+    here = os.path.abspath(os.path.dirname(__file__))
+    with open(os.path.join(here, rel_path)) as fp:
+        return fp.read()
+
+
+def get_version(rel_path: str) -> str:
+    for line in read(rel_path).splitlines():
+        if line.startswith("__version__"):
+            delim = '"' if '"' in line else "'"
+            return line.split(delim)[1]
+    raise RuntimeError("Unable to find version string.")
+
 
 with open("README.md", "r", encoding="utf-8") as f:
     readme = f.read()
 
 setup(
     name='webeye',
-    version='2.1.6',
+    version=get_version('core/__init__.py'),
     long_description=readme,
     long_description_content_type="text/markdown",
+    entry_points={'console_scripts':['webeye=core.cli:main']},
     description='A Best Powerful module for making ethical hacking tools easier',
     url='https://github.com/Zaeem20/webeye',
     author="Zaeem Technical",
