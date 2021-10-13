@@ -5,12 +5,10 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 setup(
     name='webeye',
-    version='2.1.5',
+    version='2.1.6',
     long_description=readme,
     long_description_content_type="text/markdown",
-    description='A best Powerful module for making ethical hacking tools easier',
-    py_modules=['webeye'],
-    entry_points={"console_scripts": ["webeye=webeye:main"]},
+    description='A Best Powerful module for making ethical hacking tools easier',
     url='https://github.com/Zaeem20/webeye',
     author="Zaeem Technical",
     author_email='business@zaeemtechnical.ml',

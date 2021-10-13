@@ -111,6 +111,8 @@ def subenum(host: str, cli=False, no_ip=True) -> Union[list, None]:
     try:
         api = requests.get(f"https://api.hackertarget.com/hostsearch/?q={host}")
         lines = api.text.split("\n")
+        if '' in lines:
+            lines.remove('')
         if cli:
             cliresponse = []
             for x in lines:
