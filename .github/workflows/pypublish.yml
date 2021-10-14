@@ -8,8 +8,9 @@
 
 name: Upload Python Package
 
-on: push
-
+on:
+  release:
+    types: [published]
 
 jobs:
   deploy:
@@ -28,13 +29,7 @@ jobs:
         pip install build twine setuptools
     - name: Build package
       run: python -m build
-    - name: Publish distribution 📦 to Test PyPI
-      uses: pypa/gh-action-pypi-publish@master
-      with:
-        password: ${{ secrets.TEST_TOKEN }}
-        repository_url: https://test.pypi.org/legacy/
-    - name: Publish distribution 📦 to PyPI
-      if: startsWith(github.ref, 'refs/tags')
-      uses: pypa/gh-action-pypi-publish@master
+    - name: Publish package
+      uses: pypa/gh-action-pypi-publish@release/v1
       with:
         password: ${{ secrets.PYPI_API_TOKEN }}
