@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import re
 
 version = ''
-with open('discoutils/__init__.py') as f:
+with open('webeye/__init__.py') as f:
     version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
 
 if version.endswith(('a', 'b', 'rc')):
