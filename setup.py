@@ -23,7 +23,7 @@ setup(
     version=get_version('webeye/__init__.py'),
     long_description=readme,
     long_description_content_type="text/markdown",
-    entry_points={'console_scripts':['webeye=webeye.cli:main']},
+    entry_points={'console_scripts':['webeye=webeye.__main__:main']},
     description='A Best Powerful module for making ethical hacking tools easier',
     url='https://github.com/Zaeem20/webeye',
     author="Zaeem Technical",
