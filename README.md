@@ -25,7 +25,7 @@ pip install -U webeye
 # importing
 from webeye.core import *
 # host 
-host="google.com'
+host="google.com"
 # schema
 schema="https://"
 # subdomains
