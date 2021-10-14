@@ -1,22 +1,9 @@
-import argparse, requests
+import argparse, requests, webeye
 from webeye.core import *
 import os
 
-def read(rel_path: str) -> str:
-    here = os.path.abspath(os.path.dirname(__file__))
-    with open(os.path.join(here, rel_path)) as fp:
-        return fp.read()
-
-
-def get_version(rel_path: str) -> str:
-    for line in read(rel_path).splitlines():
-        if line.startswith("__version__"):
-            delim = '"' if '"' in line else "'"
-            return line.split(delim)[1]
-    raise RuntimeError("Unable to find version string.")
-
 def main():
-    __version__= get_version('__init__.py')
+    __version__= webeye.__version__
     __author__ = 'Zaeem Techical'
 
     logo = '''
