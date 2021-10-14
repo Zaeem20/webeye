@@ -1,26 +1,33 @@
 from setuptools import setup, find_packages
-import os
+import re
 
-def read(rel_path: str) -> str:
-    here = os.path.abspath(os.path.dirname(__file__))
-    with open(os.path.join(here, rel_path)) as fp:
-        return fp.read()
+version = ''
+with open('discoutils/__init__.py') as f:
+    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
 
-
-def get_version(rel_path: str) -> str:
-    for line in read(rel_path).splitlines():
-        if line.startswith("__version__"):
-            delim = '"' if '"' in line else "'"
-            return line.split(delim)[1]
-    raise RuntimeError("Unable to find version string.")
-
+if version.endswith(('a', 'b', 'rc')):
+    # append version identifier based on commit count
+    try:
+        import subprocess
+        p = subprocess.Popen(['git', 'rev-list', '--count', 'HEAD'],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = p.communicate()
+        if out:
+            version += out.decode('utf-8').strip()
+        p = subprocess.Popen(['git', 'rev-parse', '--short', 'HEAD'],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = p.communicate()
+        if out:
+            version += '+g' + out.decode('utf-8').strip()
+    except Exception:
+        pass
 
 with open("README.md", "r", encoding="utf-8") as f:
     readme = f.read()
 
 setup(
     name='webeye',
-    version=get_version('webeye/__init__.py'),
+    version=version,
     long_description=readme,
     long_description_content_type="text/markdown",
     entry_points={'console_scripts':['webeye=webeye.__main__:main']},
