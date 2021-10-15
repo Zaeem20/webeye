@@ -65,7 +65,7 @@ def scan(target: str, port: Union[int, Iterable], start: int=0, dev_mode: bool=F
     '''
     try:
         realip = socket.gethostbyname(target)
-        lists = [f'\nPyPort started at {datetime.utcnow().strftime("%d-%b-%Y %I:%M %p")}<br/>']
+        lists = [f'\nPyPort started at {datetime.utcnow().strftime("%d-%b-%Y %I:%M %p")}<br/>','PORTS   |   SERVICE']
         on = time.time()
         def scan_port(port) -> Union[str,list]: 
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -75,7 +75,7 @@ def scan(target: str, port: Union[int, Iterable], start: int=0, dev_mode: bool=F
                 if dev_mode:
                     lists.append(f'{port}/{socket.getservbyport(port)}')
                 elif api:
-                    lists.append(f'OPEN_PORTS: {port}/{socket.getservbyport(port)}')
+                    lists.append(f'{port}/tcp | {socket.getservbyport(port)}')
                 else:
                     print(f'{port}/tcp\t |   {socket.getservbyport(port)}\t|   open   |')
             sock.close()
@@ -94,7 +94,7 @@ def scan(target: str, port: Union[int, Iterable], start: int=0, dev_mode: bool=F
         runner = execute()
 
         if dev_mode:
-            return runner,lists[1:]
+            return runner,lists[2:]
         elif api:
             return runner, lists
         else:
