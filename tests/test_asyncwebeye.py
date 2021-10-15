@@ -37,5 +37,8 @@ class Test_AsyncWebeye(unittest.TestCase):
     async def test_is_honeypot(self):
         self.assertIsInstance(await a.is_honeypot('google.com'), str)
 
+    async def test_whois(self):
+        self.assertIsInstance(await a.whois('google.com'), str)
+
 if __name__ == '__main__':
     unittest.main()
