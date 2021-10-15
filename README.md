@@ -14,6 +14,7 @@ At your Fingertips, just in 3-5 lines of code...
 • Pagelinks Extractor<br />
 • Shared DNS Scanner<br />
 • DNS Lookup<br />
+• Whois Lookup <br />
 • Geo-IP Lookup<br />
 
 ## Installation
@@ -69,6 +70,9 @@ async def portscan(target):
 
 async def reversedns(target):
     await asyncmanner.reversedns(target)
+
+async def whois(target):
+    await asyncmanner.whois(target)
 
 async def extract_pagelink(target):
     await asyncmanner.extract_pagelink(target)

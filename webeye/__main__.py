@@ -3,7 +3,6 @@ from webeye.core import *
 import os
 
 def main():
-    __version__= webeye.__version__
     __author__ = 'Zaeem Techical'
 
     logo = '''
@@ -13,13 +12,14 @@ def main():
             ===================================
                                                 '''
 
-    parser = argparse.ArgumentParser(description=f'|<――――― Webeye v{__version__} - Help Menu ―――――>|', epilog=f"Author: {__author__} (Zaeem20)")
+    parser = argparse.ArgumentParser(description=f'|<――――― Webeye v{webeye.__version__} - Help Menu ―――――>|', epilog=f"Author: {__author__} (Zaeem20)")
     parser.add_argument('-s', '--scan',action='store_true', help='Scan Open Ports of Given Host')
     parser.add_argument('-d', '--dns',action='store_true', help='Do DNS Lookup of Given Host')
     parser.add_argument('-hp','--honeypot',action='store_true', help='Find Honeypot Probablity for Given Host')
     parser.add_argument('-hs', '--subdomain',action='store_true', help='Enumerate Subdomain for Given Host')
     parser.add_argument('-C','--cloud',action='store_true', help='Check Site is protected with Cloudflare or not...')
     parser.add_argument('-b', '--grab',action='store_true', help='Grab banner of a Website')
+    parser.add_argument('-w', '--whois', action='store_true', help='Whois Lookup of Website')
     parser.add_argument('-sD', '--shareddns',action='store_true',help='Find Shared DNS Server of a Website')
     parser.add_argument('-geo', '--geolookup',action='store_true', help='Find Geolocation and many other info of host')
     parser.add_argument('-rdns', '--reversedns',action='store_true',help='Reverse DNS Lookup of a Website')
@@ -66,6 +66,8 @@ def main():
         reverseip(options.target, cli=True)
     if options.honeypot:    # Honeypot Lookup
         print(is_honeypot(options.target))
+    if options.whois:
+        print(whois(options.target))
     if options.reversedns:  # Reverse DNS Lookup
         print(reversedns(options.target))
     if options.subdomain:   # Subdomain Lookup

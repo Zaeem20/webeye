@@ -1,33 +1,27 @@
 from setuptools import setup, find_packages
-import re
+import os
 
-version = ''
-with open('webeye/__init__.py') as f:
-    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
+def read(rel_path: str) -> str:
+    here = os.path.abspath(os.path.dirname(__file__))
+    # intentionally *not* adding an encoding option to open, See:
+    #   https://github.com/pypa/virtualenv/issues/201#issuecomment-3145690
+    with open(os.path.join(here, rel_path)) as fp:
+        return fp.read()
 
-if version.endswith(('a', 'b', 'rc')):
-    # append version identifier based on commit count
-    try:
-        import subprocess
-        p = subprocess.Popen(['git', 'rev-list', '--count', 'HEAD'],
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, err = p.communicate()
-        if out:
-            version += out.decode('utf-8').strip()
-        p = subprocess.Popen(['git', 'rev-parse', '--short', 'HEAD'],
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, err = p.communicate()
-        if out:
-            version += '+g' + out.decode('utf-8').strip()
-    except Exception:
-        pass
+
+def get_version(rel_path: str) -> str:
+    for line in read(rel_path).splitlines():
+        if line.startswith("__version__"):
+            delim = '"' if '"' in line else "'"
+            return line.split(delim)[1]
+    raise RuntimeError("Unable to find version string.")
 
 with open("README.md", "r", encoding="utf-8") as f:
     readme = f.read()
 
 setup(
     name='webeye',
-    version=version,
+    version=get_version('webeye/__init__.py'),
     long_description=readme,
     long_description_content_type="text/markdown",
     entry_points={'console_scripts':['webeye=webeye.__main__:main']},
@@ -46,7 +40,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.6"],
     python_requires=">=3.6",
-    install_requires=['requests >= 2','httpx == 0.20.0'],
+    install_requires=['requests >= 2','httpx == 0.20.0', 'mechanize == 0.4.7', 'beautifulsoup4 == 4.10.0'],
     keywords="webeye red_hawk nikto webrecon recondog",
     packages=find_packages(exclude=["docs","tests"]),
     data_files=None

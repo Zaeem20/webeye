@@ -6,6 +6,8 @@ import requests
 import json as _json
 from httpx import AsyncClient
 from datetime import datetime
+import mechanize
+from bs4 import BeautifulSoup
 from collections.abc import Iterable
 from typing import Union
 from concurrent.futures import ThreadPoolExecutor
@@ -160,11 +162,17 @@ def grab(host: str, schema='http://', cli=False) -> Union[dict, None]:
     except KeyboardInterrupt:
         return sys.exit('Stopped, Exiting: 1')
 
-    # <----- Closed Whois Lookup ---->
-
-    # def whois(host):
-    #     api =  requests.get(f"https://api.hackertarget.com/whois/?q={host}")
-    #     return api.text
+def whois(target: str) -> str:
+    browser = mechanize.Browser()
+    url = 'https://www.ipvoid.com/whois/'
+    browser.open(url)
+    browser.select_form(nr=0)
+    browser['host']=target
+    response = browser.submit().read()
+    # Scraping Content
+    soup = BeautifulSoup(response, 'html.parser')
+    result = soup.find('textarea').get_text()
+    return result
 
 def geoip(host: str, cli=False) -> Union[dict, None]:
     realip = socket.gethostbyname(host)
@@ -393,11 +401,20 @@ class AsyncHelper:
         except KeyboardInterrupt:
             return 'Stopped, Exiting: 1'
 
-        # <----- Closed Whois Lookup ---->
-
-        # def whois(host):
-        #     api =  requests.get(f"https://api.hackertarget.com/whois/?q={host}")
-        #     return api.text
+    async def whois(target: str) -> str:
+        try:
+            browser = mechanize.Browser()
+            url = 'https://www.ipvoid.com/whois/'
+            browser.open(url)
+            browser.select_form(nr=0)
+            browser['host']=target
+            response = browser.submit().read()
+            # Scraping Content
+            soup = BeautifulSoup(response, 'html.parser')
+            result = soup.find('textarea').get_text()
+            return result
+        except Exception as e:
+            print(e)
 
     async def geoip(self, host: str, cli=False) -> Union[dict, None]:
         '''Asynchronous GeoLocation Enumerator of given host'''
