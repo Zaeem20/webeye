@@ -36,5 +36,8 @@ class Test_Webeye(unittest.TestCase):
     def test_is_honeypot(self):
         self.assertIsInstance(is_honeypot('google.com'), str)
 
+    def test_whois(self):
+        self.assertIsInstance(whois('google.com'), str)
+
 if __name__ == '__main__':
     unittest.main()
