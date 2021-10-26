@@ -107,7 +107,7 @@ def scan(target: str, port: Union[int, Iterable], start: int=0, dev_mode: bool=F
     except KeyboardInterrupt:
         return sys.exit('Process Stopped Exiting: 1')
 
-def subenum(host: str, cli=False, no_ip=True) -> Union[list, None]:
+def subenum(host: str, cli=False, no_ip=True) -> Union[list, dict, None]:
     """Enumerate a list of subdomains for given host Asynchronously"""
 
     GLOBAL_LIST = []
