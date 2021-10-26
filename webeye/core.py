@@ -179,6 +179,7 @@ def grab(host: str, schema='http://', cli=False) -> Union[dict, None]:
         return sys.exit('Stopped, Exiting: 1')
 
 def whois(target: str) -> str:
+    """ Whois Lookup for a Given Host """
     browser = mechanize.Browser()
     url = 'https://www.ipvoid.com/whois/'
     browser.open(url)
