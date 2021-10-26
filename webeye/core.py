@@ -109,6 +109,14 @@ def scan(target: str, port: Union[int, Iterable], start: int=0, dev_mode: bool=F
 
 def subenum(host: str, cli=False, no_ip=True) -> Union[list, None]:
     """Enumerate a list of subdomains for given host Asynchronously"""
+
+    GLOBAL_LIST = []
+
+    def listtodict(lst):
+        it = iter(lst)
+        response = dict(zip(it, it))
+        return response
+
     try:
         api = requests.get(f"https://api.hackertarget.com/hostsearch/?q={host}")
         lines = api.text.split("\n")
@@ -127,7 +135,15 @@ def subenum(host: str, cli=False, no_ip=True) -> Union[list, None]:
                 else:
                     print(f"{v[0].ljust(60,' ')} | {v[1].rjust(40,' ')}  << ({i})")
         else:
-            return list(line.split(',')[0] for line in lines)
+            if no_ip:
+                return list(line.split(',')[0] for line in lines)
+            else:
+                for line in lines:
+                    x = line.split(',')
+                    for j in x:
+                        GLOBAL_LIST.append(j)
+                return listtodict(GLOBAL_LIST)
+
     except requests.ConnectionError:
         return 'Connection Lost: Retry Again'
     except requests.ConnectTimeout:
