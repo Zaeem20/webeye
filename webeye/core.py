@@ -32,6 +32,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
+# Helper Functions
+def listtodict(lst):
+    it = iter(lst)
+    response = dict(zip(it, it))
+    return response
 
 def extract_pagelinks(host: str, cli=False) -> Union[list, None]:
     '''Extract All Pagelinks From Website'''
@@ -109,15 +114,8 @@ def scan(target: str, port: Union[int, Iterable], start: int=0, dev_mode: bool=F
 
 def subenum(host: str, cli=False, no_ip=True) -> Union[list, None]:
     """Enumerate a list of subdomains for given host Asynchronously"""
-
-    GLOBAL_LIST = []
-
-    def listtodict(lst):
-        it = iter(lst)
-        response = dict(zip(it, it))
-        return response
-
     try:
+        GLOBAL_LIST = []
         api = requests.get(f"https://api.hackertarget.com/hostsearch/?q={host}")
         lines = api.text.split("\n")
         if '' in lines:
@@ -353,10 +351,11 @@ class AsyncHelper:
         except KeyboardInterrupt:
             return sys.exit('Process Stopped Exiting: 1')
 
-    async def find_subdomains(self,host: str, cli=False, no_ip=True) -> Union[list, None]:
+    async def find_subdomains(self,host: str, cli=False, no_ip=True) -> Union[list, dict, None]:
         """Enumerate a list of subdomains for given host Asynchronously"""
         try:
             async with AsyncClient() as session:
+                RESPONSE = []
                 api = await session.get(f"https://api.hackertarget.com/hostsearch/?q={host}")
                 lines = api.text.split("\n")
                 if cli:
@@ -372,7 +371,14 @@ class AsyncHelper:
                         else:
                             print(f"{v[0].ljust(60,' ')} | {v[1].rjust(40,' ')}  << ({i})")
                 else:
-                    return list(line.split(',')[0] for line in lines)
+                    if no_ip:
+                        return list(line.split(',')[0] for line in lines)
+                    else:
+                        for line in lines:
+                            x = line.split(',')
+                            for j in x:
+                                RESPONSE.append(j)
+                        return listtodict(RESPONSE)
         except httpx.ConnectError:
             return 'Connection Lost: Retry Again'
         except httpx.ConnectTimeout:
@@ -521,3 +527,7 @@ class AsyncHelper:
             return sys.exit('Stopped, Exiting: 1')
 
 
+
+helper = AsyncHelper()
+import asyncio
+print(asyncio.run(helper.find_subdomains('zaeemtechnical.ml')))
