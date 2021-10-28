@@ -1,5 +1,6 @@
 from .core import *
 
+
 __name__ = "webeye"
 __version__ = "2.2.6"
 __author__ = "Zaeem Technical"
