@@ -16,6 +16,7 @@ At your Fingertips, just in 3-5 lines of code...
 • DNS Lookup<br />
 • Whois Lookup <br />
 • Geo-IP Lookup<br />
+• ROT encoder & decoder from (ROT-1 - ROT-25)<br />
 
 ## Installation
 ```sh
