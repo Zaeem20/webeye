@@ -213,7 +213,7 @@ def encode(text: str, rot: int=0):
     if rot == 0:
         return text.upper()
     else:
-        with open('webeye/encryption.json', 'r') as a:
+        with open('encryption.json', 'r') as a:
             encoding = _json.load(a)
             letters = string.ascii_uppercase + string.ascii_lowercase 
             _rot = encoding[f'rot-{str(rot)}']
@@ -231,7 +231,7 @@ def decode(text: str, rot: int) -> str:
     if rot == 0:
         return text.upper()
     else:
-        with open('webeye/encryption.json', 'r') as a:
+        with open('encryption.json', 'r') as a:
             encoding = _json.load(a)
             letters = string.ascii_uppercase + string.ascii_lowercase 
             _rot = encoding[f'rot-{str(rot)}']
