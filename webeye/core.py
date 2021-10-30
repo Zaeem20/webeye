@@ -3,14 +3,16 @@ import time
 import sys
 import httpx
 import requests
+import string
+import mechanize
 import json as _json
 from httpx import AsyncClient
 from datetime import datetime
-import mechanize
 from bs4 import BeautifulSoup
 from collections.abc import Iterable
 from typing import Union
 from concurrent.futures import ThreadPoolExecutor
+from encryptions import encoding
 
 '''
 MIT License
@@ -190,6 +192,7 @@ def whois(target: str) -> str:
     return result
 
 def geoip(host: str, cli=False) -> Union[dict, None]:
+    '''Geolocation Enumeration for a given host'''
     realip = socket.gethostbyname(host)
     api= requests.get(f'http://ip-api.com/json/{realip}?fields=66846715').json()
     if not cli:
@@ -200,6 +203,30 @@ def geoip(host: str, cli=False) -> Union[dict, None]:
             a+=1
             print(f'{a}). {x}: {y}')
 
+def encode(text: str, rot: int=0):
+    '''Encode text from ROT_1 - ROT_25
+    eg:- webeye.encode('hello', type='rot-13')
+    '''
+    if rot > 25:
+        return f"Unable to rotate text in rot-{rot}"
+    elif rot < 0:
+        return 'rotation cannot be in negetive value'
+    if rot == 0:
+        return text.upper()
+    else:
+        letters = string.ascii_uppercase + string.ascii_lowercase 
+        _rot = encoding[f'rot-{str(rot)}']
+        rot = text.maketrans(letters, _rot)
+        return text.translate(rot)
+
+def decode(text: str, rot: int) -> str:
+    '''Decode text from ROT_1 - ROT_25
+    eg:- webeye.encode('hello', type='rot-13')
+    '''
+    letters = string.ascii_uppercase + string.ascii_lowercase 
+    _rot = encoding[f'rot-{str(rot)}']
+    rot = text.maketrans(_rot, letters)
+    return text.translate(rot)
 
 def is_cloudflare(host: str, schema='http://', cli=False) -> Union[bool, None]:
     '''Check For Cloudflare in a given host'''
@@ -425,6 +452,7 @@ class AsyncHelper:
             return 'Stopped, Exiting: 1'
 
     async def whois(target: str) -> str:
+        '''Whois Lookup of a Given Host'''
         try:
             browser = mechanize.Browser()
             url = 'https://www.ipvoid.com/whois/'
@@ -528,6 +556,6 @@ class AsyncHelper:
 
 
 
-helper = AsyncHelper()
-import asyncio
-print(asyncio.run(helper.find_subdomains('zaeemtechnical.ml')))
+# helper = AsyncHelper()
+# import asyncio
+# print(asyncio.run(helper.find_subdomains('zaeemtechnical.ml')))
