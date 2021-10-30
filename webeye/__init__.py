@@ -1,6 +1,4 @@
 from .core import *
-from encryptions import encoding
-
 
 __name__ = "webeye"
 __version__ = "2.2.7"

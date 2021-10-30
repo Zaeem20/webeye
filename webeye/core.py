@@ -12,7 +12,6 @@ from bs4 import BeautifulSoup
 from collections.abc import Iterable
 from typing import Union
 from concurrent.futures import ThreadPoolExecutor
-from encryptions import encoding
 
 '''
 MIT License
@@ -33,6 +32,35 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
+
+encoding = {
+    'rot-0': string.ascii_uppercase,
+    'rot-1': 'BCDEFGHIJKLMNOPQRSTUVWXYZAbcdefghijklmnopqrstuvwxyza',
+    'rot-2': 'CDEFGHIJKLMNOPQRSTUVWXYZABcdefghijklmnopqrstuvwxyzab',
+    'rot-3': 'DEFGHIJKLMNOPQRSTUVWXYZABCdefghijklmnopqrstuvwxyzabc',
+    'rot-4': 'EFGHIJKLMNOPQRSTUVWXYZABCDefghijklmnopqrstuvwxyzabcd',
+    'rot-5': 'FGHIJKLMNOPQRSTUVWXYZABCDEfghijklmnopqrstuvwxyzabcde',
+    'rot-6': 'GHIJKLMNOPQRSTUVWXYZABCDEFghijklmnopqrstuvwxyzabcdef',
+    'rot-7': 'HIJKLMNOPQRSTUVWXYZABCDEFGhijklmnopqrstuvwxyzabcdefg',
+    'rot-8': 'IJKLMNOPQRSTUVWXYZABCDEFGHijklmnopqrstuvwxyzabcdefgh',
+    'rot-9': 'JKLMNOPQRSTUVWXYZABCDEFGHIjklmnopqrstuvwxyzabcdefghi',
+    'rot-10': 'KLMNOPQRSTUVWXYZABCDEFGHIJklmnopqrstuvwxyzabcdefghij',
+    'rot-11': 'LMNOPQRSTUVWXYZABCDEFGHIJKlmnopqrstuvwxyzabcdefghijk',
+    'rot-12': 'MNOPQRSTUVWXYZABCDEFGHIJKLmnopqrstuvwxyzabcdefghijkl',
+    'rot-13': 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm',
+    'rot-14': 'OPQRSTUVWXYZABCDEFGHIJKLMNopqrstuvwxyzabcdefghijklmn',
+    'rot-15': 'PQRSTUVWXYZABCDEFGHIJKLMNOpqrstuvwxyzabcdefghijklmno',
+    'rot-16': 'QRSTUVWXYZABCDEFGHIJKLMNOPqrstuvwxyzabcdefghijklmnop',
+    'rot-17': 'RSTUVWXYZABCDEFGHIJKLMNOPQrstuvwxyzabcdefghijklmnopq',
+    'rot-18': 'STUVWXYZABCDEFGHIJKLMNOPQRstuvwxyzabcdefghijklmnopqr',
+    'rot-19': 'TUVWXYZABCDEFGHIJKLMNOPQRStuvwxyzabcdefghijklmnopqrs',
+    'rot-20': 'UVWXYZABCDEFGHIJKLMNOPQRSTuvwxyzabcdefghijklmnopqrst',
+    'rot-21': 'VWXYZABCDEFGHIJKLMNOPQRSTUvwxyzabcdefghijklmnopqrstu',
+    'rot-22': 'WXYZABCDEFGHIJKLMNOPQRSTUVwxyzabcdefghijklmnopqrstuv',
+    'rot-23': 'XYZABCDEFGHIJKLMNOPQRSTUVWxyzabcdefghijklmnopqrstuvw',
+    'rot-24': 'YZABCDEFGHIJKLMNOPQRSTUVWXyzabcdefghijklmnopqrstuvwx',
+    'rot-25': 'ZABCDEFGHIJKLMNOPQRSTUVWXYzabcdefghijklmnopqrstuvwxy'
+}
 
 # Helper Functions
 def listtodict(lst):
