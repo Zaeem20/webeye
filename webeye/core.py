@@ -33,35 +33,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-encoding = {
-    'rot-0': string.ascii_uppercase,
-    'rot-1': 'BCDEFGHIJKLMNOPQRSTUVWXYZAbcdefghijklmnopqrstuvwxyza',
-    'rot-2': 'CDEFGHIJKLMNOPQRSTUVWXYZABcdefghijklmnopqrstuvwxyzab',
-    'rot-3': 'DEFGHIJKLMNOPQRSTUVWXYZABCdefghijklmnopqrstuvwxyzabc',
-    'rot-4': 'EFGHIJKLMNOPQRSTUVWXYZABCDefghijklmnopqrstuvwxyzabcd',
-    'rot-5': 'FGHIJKLMNOPQRSTUVWXYZABCDEfghijklmnopqrstuvwxyzabcde',
-    'rot-6': 'GHIJKLMNOPQRSTUVWXYZABCDEFghijklmnopqrstuvwxyzabcdef',
-    'rot-7': 'HIJKLMNOPQRSTUVWXYZABCDEFGhijklmnopqrstuvwxyzabcdefg',
-    'rot-8': 'IJKLMNOPQRSTUVWXYZABCDEFGHijklmnopqrstuvwxyzabcdefgh',
-    'rot-9': 'JKLMNOPQRSTUVWXYZABCDEFGHIjklmnopqrstuvwxyzabcdefghi',
-    'rot-10': 'KLMNOPQRSTUVWXYZABCDEFGHIJklmnopqrstuvwxyzabcdefghij',
-    'rot-11': 'LMNOPQRSTUVWXYZABCDEFGHIJKlmnopqrstuvwxyzabcdefghijk',
-    'rot-12': 'MNOPQRSTUVWXYZABCDEFGHIJKLmnopqrstuvwxyzabcdefghijkl',
-    'rot-13': 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm',
-    'rot-14': 'OPQRSTUVWXYZABCDEFGHIJKLMNopqrstuvwxyzabcdefghijklmn',
-    'rot-15': 'PQRSTUVWXYZABCDEFGHIJKLMNOpqrstuvwxyzabcdefghijklmno',
-    'rot-16': 'QRSTUVWXYZABCDEFGHIJKLMNOPqrstuvwxyzabcdefghijklmnop',
-    'rot-17': 'RSTUVWXYZABCDEFGHIJKLMNOPQrstuvwxyzabcdefghijklmnopq',
-    'rot-18': 'STUVWXYZABCDEFGHIJKLMNOPQRstuvwxyzabcdefghijklmnopqr',
-    'rot-19': 'TUVWXYZABCDEFGHIJKLMNOPQRStuvwxyzabcdefghijklmnopqrs',
-    'rot-20': 'UVWXYZABCDEFGHIJKLMNOPQRSTuvwxyzabcdefghijklmnopqrst',
-    'rot-21': 'VWXYZABCDEFGHIJKLMNOPQRSTUvwxyzabcdefghijklmnopqrstu',
-    'rot-22': 'WXYZABCDEFGHIJKLMNOPQRSTUVwxyzabcdefghijklmnopqrstuv',
-    'rot-23': 'XYZABCDEFGHIJKLMNOPQRSTUVWxyzabcdefghijklmnopqrstuvw',
-    'rot-24': 'YZABCDEFGHIJKLMNOPQRSTUVWXyzabcdefghijklmnopqrstuvwx',
-    'rot-25': 'ZABCDEFGHIJKLMNOPQRSTUVWXYzabcdefghijklmnopqrstuvwxy'
-}
-
 # Helper Functions
 def listtodict(lst):
     it = iter(lst)
@@ -242,8 +213,10 @@ def encode(text: str, rot: int=0):
     if rot == 0:
         return text.upper()
     else:
-        letters = string.ascii_uppercase + string.ascii_lowercase 
-        _rot = encoding[f'rot-{str(rot)}']
+        with open('webeye/encryption.json', 'r') as a:
+            encoding = _json.load(a)
+            letters = string.ascii_uppercase + string.ascii_lowercase 
+            _rot = encoding[f'rot-{str(rot)}']
         rot = text.maketrans(letters, _rot)
         return text.translate(rot)
 
@@ -251,10 +224,19 @@ def decode(text: str, rot: int) -> str:
     '''Decode text from ROT_1 - ROT_25
     eg:- webeye.encode('hello', type='rot-13')
     '''
-    letters = string.ascii_uppercase + string.ascii_lowercase 
-    _rot = encoding[f'rot-{str(rot)}']
-    rot = text.maketrans(_rot, letters)
-    return text.translate(rot)
+    if rot > 25:
+        return f"Unable to rotate text in rot-{rot}"
+    elif rot < 0:
+        return 'rotation cannot be in negetive value'
+    if rot == 0:
+        return text.upper()
+    else:
+        with open('webeye/encryption.json', 'r') as a:
+            encoding = _json.load(a)
+            letters = string.ascii_uppercase + string.ascii_lowercase 
+            _rot = encoding[f'rot-{str(rot)}']
+        rot = text.maketrans(_rot, letters)
+        return text.translate(rot)
 
 def is_cloudflare(host: str, schema='http://', cli=False) -> Union[bool, None]:
     '''Check For Cloudflare in a given host'''
