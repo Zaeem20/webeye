@@ -1,4 +1,5 @@
 from .core import *
+from .encryptions import encoding
 
 
 __name__ = "webeye"
