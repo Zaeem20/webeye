@@ -1,4 +1,3 @@
-__all__ = ['encoding']
 
 encoding ={
     "rot-0": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
