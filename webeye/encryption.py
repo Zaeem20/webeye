@@ -1,4 +1,6 @@
-{
+__all__ = ['encoding']
+
+encoding ={
     "rot-0": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
     "rot-1": "BCDEFGHIJKLMNOPQRSTUVWXYZAbcdefghijklmnopqrstuvwxyza",
     "rot-2": "CDEFGHIJKLMNOPQRSTUVWXYZABcdefghijklmnopqrstuvwxyzab",

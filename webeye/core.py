@@ -11,6 +11,7 @@ from httpx import AsyncClient
 from datetime import datetime
 from bs4 import BeautifulSoup
 from collections.abc import Iterable
+import encryption
 from typing import Union
 from concurrent.futures import ThreadPoolExecutor
 
@@ -214,10 +215,8 @@ def encode(text: str, rot: int=0):
     if rot == 0:
         return text.upper()
     else:
-        with open(os.path.join(sys.path[0], 'encryption.json'), 'r') as a:
-            encoding = _json.load(a)
-            letters = string.ascii_uppercase + string.ascii_lowercase 
-            _rot = encoding[f'rot-{str(rot)}']
+        letters = string.ascii_uppercase + string.ascii_lowercase 
+        _rot = encryption.encoding[f'rot-{str(rot)}']
         rot = text.maketrans(letters, _rot)
         return text.translate(rot)
 
@@ -232,12 +231,12 @@ def decode(text: str, rot: int) -> str:
     if rot == 0:
         return text.upper()
     else:
-        with open(os.path.join(sys.path[0], 'encryption.json'), 'r') as a:
-            encoding = _json.load(a)
-            letters = string.ascii_uppercase + string.ascii_lowercase 
-            _rot = encoding[f'rot-{str(rot)}']
+        letters = string.ascii_uppercase + string.ascii_lowercase 
+        _rot = encryption.encoding[f'rot-{str(rot)}']
         rot = text.maketrans(_rot, letters)
         return text.translate(rot)
+
+print(encode('Zaeem', rot=13))
 
 def is_cloudflare(host: str, schema='http://', cli=False) -> Union[bool, None]:
     '''Check For Cloudflare in a given host'''
