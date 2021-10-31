@@ -1,4 +1,5 @@
 from .core import *
+from .encryption import *
 
 __name__ = "webeye"
 __version__ = "2.2.7"

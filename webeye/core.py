@@ -236,7 +236,6 @@ def decode(text: str, rot: int) -> str:
         rot = text.maketrans(_rot, letters)
         return text.translate(rot)
 
-print(encode('Zaeem', rot=13))
 
 def is_cloudflare(host: str, schema='http://', cli=False) -> Union[bool, None]:
     '''Check For Cloudflare in a given host'''
