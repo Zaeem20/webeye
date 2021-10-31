@@ -4,6 +4,7 @@ import sys
 import httpx
 import requests
 import string
+import os
 import mechanize
 import json as _json
 from httpx import AsyncClient
@@ -213,7 +214,7 @@ def encode(text: str, rot: int=0):
     if rot == 0:
         return text.upper()
     else:
-        with open('webeye/encryption.json', 'r') as a:
+        with open(os.path.join(sys.path[0], 'encryption.json'), 'r') as a:
             encoding = _json.load(a)
             letters = string.ascii_uppercase + string.ascii_lowercase 
             _rot = encoding[f'rot-{str(rot)}']
@@ -231,7 +232,7 @@ def decode(text: str, rot: int) -> str:
     if rot == 0:
         return text.upper()
     else:
-        with open('webeye/encryption.json', 'r') as a:
+        with open(os.path.join(sys.path[0], 'encryption.json'), 'r') as a:
             encoding = _json.load(a)
             letters = string.ascii_uppercase + string.ascii_lowercase 
             _rot = encoding[f'rot-{str(rot)}']
