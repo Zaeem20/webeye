@@ -585,9 +585,3 @@ class AsyncHelper:
             return f'{socket.gethostbyname(host)} is Unreachable'
         except KeyboardInterrupt:
             return sys.exit('Stopped, Exiting: 1')
-
-
-
-helper = AsyncHelper()
-import asyncio
-print(asyncio.run(helper.isitdown('zaeemtechnical.ml')))
