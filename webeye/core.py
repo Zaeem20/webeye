@@ -3,15 +3,14 @@ import time
 import sys
 import httpx
 import requests
-import string
-import os
 import mechanize
+import string
 import json as _json
 from httpx import AsyncClient
 from datetime import datetime
 from bs4 import BeautifulSoup
 from collections.abc import Iterable
-from webeye.rot import encoding
+from webeye.encryptions import rot as rotation
 from typing import Union
 from concurrent.futures import ThreadPoolExecutor
 
@@ -216,7 +215,7 @@ def encode(text: str, rot: int=0):
         return text.upper()
     else:
         letters = string.ascii_uppercase + string.ascii_lowercase 
-        _rot = encoding[f'rot-{str(rot)}']
+        _rot = rotation.encoding[f'rot-{str(rot)}']
         rot = text.maketrans(letters, _rot)
         return text.translate(rot)
 
@@ -232,7 +231,7 @@ def decode(text: str, rot: int) -> str:
         return text.upper()
     else:
         letters = string.ascii_uppercase + string.ascii_lowercase 
-        _rot = encoding[f'rot-{str(rot)}']
+        _rot = rotation.encoding[f'rot-{str(rot)}']
         rot = text.maketrans(_rot, letters)
         return text.translate(rot)
 
@@ -265,6 +264,18 @@ def fetch_dns(host: str, cli=False) -> Union[None, list]:
         else:
             result = api.split("\n")
             return result
+    except requests.ConnectionError:
+        return 'Connection Lost: Exiting...'
+    except requests.ConnectTimeout:
+        return 'Unable to Get Response'
+    except KeyboardInterrupt:
+        return sys.exit('Stopped, Exiting: 1')
+
+def isitdown(host: str) -> dict:
+    """Check whether the site is down for everyone or not..."""
+    try:
+        response = requests.get(f'https://isitdown.site/api/v3/{host}').json()
+        return response
     except requests.ConnectionError:
         return 'Connection Lost: Exiting...'
     except requests.ConnectTimeout:
@@ -324,6 +335,19 @@ class AsyncHelper:
                     print(f'{count}). {result}')
             else:
                 return response
+
+    async def isitdown(self, host: str) -> dict:
+        """Asynchronously checks whether the site is down for everyone or not."""
+        try:
+            async with AsyncClient() as session:
+                response = await session.get(f'https://isitdown.site/api/v3/{host}')
+                return response.json()
+        except httpx.ConnectError:
+            return 'Connection Lost: Retry Again'
+        except httpx.ConnectTimeout:
+            return 'Taking too long! Exiting: 1'
+        except KeyboardInterrupt:
+            return sys.exit('Stopped, Exiting: 1')
 
     async def reversedns(self, hostip: str) -> str:
         '''Asynchronous Reverse DNS Lookup'''
@@ -564,6 +588,6 @@ class AsyncHelper:
 
 
 
-# helper = AsyncHelper()
-# import asyncio
-# print(asyncio.run(helper.find_subdomains('zaeemtechnical.ml')))
+helper = AsyncHelper()
+import asyncio
+print(asyncio.run(helper.isitdown('zaeemtechnical.ml')))
