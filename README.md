@@ -16,6 +16,7 @@ At your Fingertips, just in 3-5 lines of code...
 • DNS Lookup<br />
 • Whois Lookup <br />
 • Geo-IP Lookup<br />
+• SiteDown detector<br />
 • ROT encoder & decoder from (ROT-1 - ROT-25)<br />
 
 ## Installation
@@ -25,7 +26,7 @@ pip install -U webeye
 ## Getting Started
 ```py
 # importing
-from webeye.core import *
+from webeye import *
 # host 
 host="google.com"
 # schema
