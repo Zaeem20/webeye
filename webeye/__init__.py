@@ -1,7 +1,7 @@
 from .core import *
 
 __name__ = "webeye"
-__version__ = "2.2.8"
+__version__ = "2.2.9"
 __author__ = "Zaeem Technical"
 __helper__ = "Rishi Raj"
 __github__ = "https://github.com/Zaeem20/webeye/"

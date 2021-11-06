@@ -3,16 +3,7 @@ from webeye.core import *
 import os
 
 def main():
-    __author__ = 'Zaeem Techical'
-
-    logo = '''
-            ===================================
-            |   Python Port Scanner v2.5      |
-            |          <--powered by Webeye-->|    
-            ===================================
-                                                '''
-
-    parser = argparse.ArgumentParser(description=f'|<――――― Webeye v{webeye.__version__} - Help Menu ―――――>|', epilog=f"Author: {__author__} (Zaeem20)")
+    parser = argparse.ArgumentParser(description=f'|<――――― Webeye v{webeye.__version__} - Help Menu ―――――>|', epilog=f"Author: {webeye.__author__} (Zaeem20)")
     parser.add_argument('-s', '--scan',action='store_true', help='Scan Open Ports of Given Host')
     parser.add_argument('-d', '--dns',action='store_true', help='Do DNS Lookup of Given Host')
     parser.add_argument('-hp','--honeypot',action='store_true', help='Find Honeypot Probablity for Given Host')
@@ -37,8 +28,6 @@ def main():
     if options.scan:        #port scanner
         try:
             latency = requests.get('http://' + options.target)
-            print(logo)
-            print()
             print(f'PyPort v2.5 Started at {datetime.utcnow().strftime("%d-%b-%Y %I:%M %p")}')
             print(f'PyPort Scan Report for {options.target} ({socket.gethostbyname(options.target)})')
             print(f"Host is up ({round(latency.elapsed.total_seconds(), 2)}s latency)")
