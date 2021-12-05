@@ -417,6 +417,8 @@ class AsyncHelper:
                 RESPONSE = []
                 api = await session.get(f"https://api.hackertarget.com/hostsearch/?q={host}")
                 lines = api.text.split("\n")
+                if '' in lines:
+                    lines.remove('')
                 if cli:
                     cliresponse = []
                     for x in lines:
