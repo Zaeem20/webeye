@@ -65,7 +65,7 @@ def reversedns(host: str) -> str:
     api =  requests.get(f'https://api.hackertarget.com/reversedns/?q={realip}').text.strip(f'{realip} ')
     return api
 
-def scan(target: str, port: Union[int, Iterable], start: int=0, dev_mode: bool=False, api :bool=False) -> Union[tuple,None]:
+def scan(target: str, port: Union[int, Iterable], start: int=0, dev_mode: bool=False, api :bool=False, threads: int=100) -> Union[tuple,None]:
     '''Python Port Scanner Enumerate all Open Ports of Given Host:\n
     Use dev_mode = True,  if You want response in list.\n
     Use API = True if you are making api
@@ -84,11 +84,11 @@ def scan(target: str, port: Union[int, Iterable], start: int=0, dev_mode: bool=F
                 elif api:
                     lists.append(f'{port}/tcp | {socket.getservbyport(port)}')
                 else:
-                    print(f'{port}/tcp\t |   {socket.getservbyport(port)}\t|   open   |')
+                    print(f'{port}/tcp\t   |   {socket.getservbyport(port)}\t|   open   |')
             sock.close()
 
         def execute():
-            with ThreadPoolExecutor(max_workers=10000) as host:
+            with ThreadPoolExecutor(max_workers=threads) as host:
                 if isinstance(port, Iterable):
                     host.map(scan_port, port)
                     return 'Scan Finished.'
@@ -115,7 +115,7 @@ def scan(target: str, port: Union[int, Iterable], start: int=0, dev_mode: bool=F
         return sys.exit('Process Stopped Exiting: 1')
 
 def subenum(host: str, cli=False, no_ip=True) -> Union[list, dict, None]:
-    """Enumerate a list of subdomains for given host Asynchronously"""
+    """Enumerate a list of subdomains for given host"""
     try:
         GLOBAL_LIST = []
         api = requests.get(f"https://api.hackertarget.com/hostsearch/?q={host}")
@@ -146,8 +146,6 @@ def subenum(host: str, cli=False, no_ip=True) -> Union[list, dict, None]:
 
     except requests.ConnectionError:
         return 'Connection Lost: Retry Again'
-    except requests.ConnectTimeout:
-        return 'Taking too long! Exiting: 1'
     except KeyboardInterrupt:
         return sys.exit('Stopped, Exiting: 1')
 
@@ -173,8 +171,6 @@ def grab(host: str, schema='http://', cli=False) -> Union[dict, None]:
             return dict(api.headers)
     except requests.ConnectionError:
         return 'Connection Lost: Exiting...'
-    except requests.ConnectTimeout:
-        return 'Unable to Get Response'
     except KeyboardInterrupt:
         return sys.exit('Stopped, Exiting: 1')
 
@@ -250,8 +246,6 @@ def is_cloudflare(host: str, schema='http://', cli=False) -> Union[bool, None]:
             return False
     except requests.ConnectionError:
         return 'Connection Lost: Exiting...'
-    except requests.ConnectTimeout:
-        return 'Unable to Get Response'
     except KeyboardInterrupt:
         return sys.exit('Stopped, Exiting: 1')
 
@@ -266,8 +260,6 @@ def fetch_dns(host: str, cli=False) -> Union[None, list]:
             return result
     except requests.ConnectionError:
         return 'Connection Lost: Exiting...'
-    except requests.ConnectTimeout:
-        return 'Unable to Get Response'
     except KeyboardInterrupt:
         return sys.exit('Stopped, Exiting: 1')
 
@@ -278,8 +270,6 @@ def isitdown(host: str) -> dict:
         return response
     except requests.ConnectionError:
         return 'Connection Lost: Exiting...'
-    except requests.ConnectTimeout:
-        return 'Unable to Get Response'
     except KeyboardInterrupt:
         return sys.exit('Stopped, Exiting: 1')
 
@@ -360,7 +350,7 @@ class AsyncHelper:
             else:
                 return 'Enter IP of Host not URL'
 
-    async def scan(self, target: str, port: Union[int, Iterable], start: int=0, dev_mode: bool=False, api :bool=False) -> Union[list, None]:
+    async def scan(self, target: str, port: Union[int, Iterable], start: int=0, dev_mode: bool=False, api :bool=False, threads: int=100) -> Union[list, None]:
         '''Asynchronous Python Port Scanner Enumerate all Open Ports of Given Host:\n
         Use dev_mode = True,  if You want response in list.\n
         Use API = True if you are making api
@@ -379,11 +369,11 @@ class AsyncHelper:
                     elif api:
                         lists.append(f'OPEN_PORTS | {port}tcp/{socket.getservbyport(port)}')
                     else:
-                        print(f'{port}/tcp\t |   {socket.getservbyport(port)}\t|   open   |')
+                        print(f'{port}/tcp\t  |   {socket.getservbyport(port)}\t|   open   |')
                 sock.close()
 
             async def execute():
-                with ThreadPoolExecutor(max_workers=10000) as host:
+                with ThreadPoolExecutor(max_workers=threads) as host:
                     if isinstance(port, Iterable):
                         host.map(scan_port, port)
                         return 'Scan Finished.'
@@ -428,9 +418,9 @@ class AsyncHelper:
                             cliresponse.append(x.split(','))
                     for i,v in enumerate(cliresponse, start=1):
                         if no_ip:
-                            print(f'{i}). {v}')
+                            print(f'{i:02}). {v}')
                         else:
-                            print(f"{v[0].ljust(60,' ')} | {v[1].rjust(40,' ')}  << ({i})")
+                            print(f"{v[0].ljust(60,' ')} | {v[1].rjust(40,' ')}  << ({i:02})")
                 else:
                     if no_ip:
                         return list(line.split(',')[0] for line in lines)
