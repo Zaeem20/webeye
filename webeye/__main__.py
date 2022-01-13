@@ -1,6 +1,5 @@
 import argparse, requests, webeye
 from webeye.core import *
-import os
 
 def main():
     parser = argparse.ArgumentParser(description=f'|<――――― Webeye v{webeye.__version__} - Help Menu ―――――>|', epilog=f"Author: {webeye.__author__} (Zaeem20)")
