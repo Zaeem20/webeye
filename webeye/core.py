@@ -3,7 +3,6 @@ import time
 import sys
 import httpx
 import requests
-import mechanize
 import string
 import json as _json
 from httpx import AsyncClient
@@ -176,21 +175,18 @@ def grab(host: str, schema='http://', cli=False) -> Union[dict, None]:
 
 def whois(target: str) -> str:
     """ Whois Lookup for a Given Host """
-    browser = mechanize.Browser()
-    url = 'https://www.ipvoid.com/whois/'
-    browser.open(url)
-    browser.select_form(nr=0)
-    browser['host']=target
-    response = browser.submit().read()
-    # Scraping Content
-    soup = BeautifulSoup(response, 'html.parser')
-    result = soup.find('textarea').get_text()
-    return result
+    try:
+        response = requests.get(f"https://api.webeye.ml/whois/?q={target}").text
+        return response
+    except (requests.ConnectionError, requests.ConnectTimeout):
+        return 'Unable to get result'
+    except Exception:
+        print("something went wrong")
 
 def geoip(host: str, cli=False) -> Union[dict, None]:
     '''Geolocation Enumeration for a given host'''
     realip = socket.gethostbyname(host)
-    api= requests.get(f'http://ip-api.com/json/{realip}?fields=66846715').json()
+    api = requests.get(f'http://ip-api.com/json/{realip}?fields=66846715').json()
     if not cli:
         return api
     else:
@@ -475,19 +471,14 @@ class AsyncHelper:
         except KeyboardInterrupt:
             return 'Stopped, Exiting: 1'
 
-    async def whois(target: str) -> str:
+    async def whois(self, target: str) -> str:
         '''Whois Lookup of a Given Host'''
         try:
-            browser = mechanize.Browser()
-            url = 'https://www.ipvoid.com/whois/'
-            browser.open(url)
-            browser.select_form(nr=0)
-            browser['host']=target
-            response = browser.submit().read()
-            # Scraping Content
-            soup = BeautifulSoup(response, 'html.parser')
-            result = soup.find('textarea').get_text()
-            return result
+            async with AsyncClient() as session:
+                response = await session.get(f"https://api.webeye.ml/whois/?q={target}")
+                return response.text
+        except (httpx.ConnectError, httpx.ConnectTimeout):
+            print("Unable to get response")
         except Exception as e:
             print(e)
 
@@ -496,7 +487,7 @@ class AsyncHelper:
         try:
             async with AsyncClient() as session:
                 realip = socket.gethostbyname(host)
-                api= await session.get(f'http://ip-api.com/json/{realip}?fields=66846715')
+                api = await session.get(f'http://ip-api.com/json/{realip}?fields=66846715')
                 result = api.json()
                 if not cli:
                     return result
