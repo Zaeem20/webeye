@@ -34,7 +34,7 @@ SOFTWARE.
 '''
 
 # Helper Functions
-def listtodict(lst):
+def _listtodict(lst):
     it = iter(lst)
     response = dict(zip(it, it))
     return response
@@ -116,18 +116,13 @@ def scan(target: str, port: Union[int, Iterable], start: int=0, dev_mode: bool=F
 def subenum(host: str, cli=False, no_ip=True) -> Union[list, dict, None]:
     """Enumerate a list of subdomains for given host"""
     try:
-        GLOBAL_LIST = []
+        DOMAINS = []
         api = requests.get(f"https://api.hackertarget.com/hostsearch/?q={host}")
         lines = api.text.split("\n")
         if '' in lines:
             lines.remove('')
         if cli:
-            cliresponse = []
-            for x in lines:
-                if no_ip:
-                    cliresponse.append(x.split(',')[0])
-                else:
-                    cliresponse.append(x.split(','))
+            cliresponse = [x.split(',')[0] if no_ip else x.split(',') for x in lines]
             for i,v in enumerate(cliresponse, start=1):
                 if no_ip:
                     print(f'{i}). {v}')
@@ -140,8 +135,8 @@ def subenum(host: str, cli=False, no_ip=True) -> Union[list, dict, None]:
                 for line in lines:
                     x = line.split(',')
                     for j in x:
-                        GLOBAL_LIST.append(j)
-                return listtodict(GLOBAL_LIST)
+                        DOMAINS.append(j)
+                return _listtodict(DOMAINS)
 
     except requests.ConnectionError:
         return 'Connection Lost: Retry Again'
@@ -186,14 +181,12 @@ def whois(target: str) -> str:
 def geoip(host: str, cli=False) -> Union[dict, None]:
     '''Geolocation Enumeration for a given host'''
     realip = socket.gethostbyname(host)
-    api = requests.get(f'http://ip-api.com/json/{realip}?fields=66846715').json()
+    api : dict = requests.get(f'http://ip-api.com/json/{realip}?fields=66846715').json()
     if not cli:
         return api
     else:
-        a = 0
-        for x,y in api.items():
-            a+=1
-            print(f'{a}). {x}: {y}')
+        for c,(k,v) in enumerate(api.items(), start=1):
+            print(f'{c}). {k}: {v}')
 
 def encode(text: str, rot: int=0):
     '''Encode text from ROT_1 - ROT_25
@@ -227,19 +220,16 @@ def decode(text: str, rot: int) -> str:
         rot = text.maketrans(_rot, letters)
         return text.translate(rot)
 
-def is_cloudflare(host: str, schema='http://', cli=False) -> Union[bool, None]:
-    '''Check For Cloudflare in a given host'''
+def enumerate_waf(host: str) -> Union[str, list, bool]:
+    '''Enumerate list of Firewall protecting host, False if not found...'''
     try:
-        target = requests.get(schema+host)
-        o = target.headers
-        if o["server"] == "cloudflare":
-            if cli:
-                print('Cloudflare Detected on: {}'.format(host));return
-            return True
-        else:
-            if cli:
-                print('Cloudflare Not Detected on: {}'.format(host));return
-            return False
+        target = requests.get(f"https://api.webeye.ml/waf/?q={host}")
+        socket.gethostbyname(host)
+        waf = target.json()['manufacturer'] if target.json()['waf'] else False
+        return (waf if waf else False)
+
+    except socket.gaierror:
+        return "Unable to connect with host"
     except requests.ConnectionError:
         return 'Connection Lost: Exiting...'
     except KeyboardInterrupt:
@@ -406,12 +396,7 @@ class AsyncHelper:
                 if '' in lines:
                     lines.remove('')
                 if cli:
-                    cliresponse = []
-                    for x in lines:
-                        if no_ip:
-                            cliresponse.append(x.split(',')[0])
-                        else:
-                            cliresponse.append(x.split(','))
+                    cliresponse = [x.split(',')[0] if no_ip else x.split(',') for x in lines]
                     for i,v in enumerate(cliresponse, start=1):
                         if no_ip:
                             print(f'{i:02}). {v}')
@@ -425,7 +410,7 @@ class AsyncHelper:
                             x = line.split(',')
                             for j in x:
                                 RESPONSE.append(j)
-                        return listtodict(RESPONSE)
+                        return _listtodict(RESPONSE)
         except httpx.ConnectError:
             return 'Connection Lost: Retry Again'
         except httpx.ConnectTimeout:
@@ -488,12 +473,11 @@ class AsyncHelper:
             async with AsyncClient() as session:
                 realip = socket.gethostbyname(host)
                 api = await session.get(f'http://ip-api.com/json/{realip}?fields=66846715')
-                result = api.json()
+                result : dict = api.json()
                 if not cli:
                     return result
                 else:
-                    a = 0
-                    for x,y in result.items():
+                    for a, (x, y) in enumerate(result.items(), start=1):
                         a+=1
                         print(f'{a}). {x}: {y}')
         except httpx.ConnectError:
@@ -503,20 +487,17 @@ class AsyncHelper:
         except socket.error:
             return 'Something Went Wrong!!!'
 
-    async def is_cloudflare(self, host: str, schema='http://', cli=False) -> Union[bool, None]:
-        '''Check For Cloudflare in a given host asynchronously'''
+    async def enumerate_waf(self, host: str) -> Union[list, str, bool]:
+        '''Enumerate list of Firewall protecting host, False if not found.'''
         try:
             async with AsyncClient() as session:
-                target = await session.get(schema+host)
-                o = dict(target.headers)
-                if o["server"] == "cloudflare":
-                    if cli:
-                        print('Cloudflare Detected on: {}'.format(host));return
-                    return True
-                else:
-                    if cli:
-                        print('Cloudflare Not Detected on: {}'.format(host));return
-                    return False
+                target = await session.get(f"https://api.webeye.ml/waf/?q={host}")
+                socket.gethostbyname(host)
+                waf = target.json()['manufacturer'] if target.json()['waf'] else False
+                return (waf if waf else False)
+
+        except socket.gaierror:
+            return "Unable to connect with host"
         except httpx.ConnectError:
             return 'Connection Lost: Exiting...'
         except httpx.ConnectTimeout:
