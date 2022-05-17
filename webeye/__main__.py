@@ -7,7 +7,7 @@ def main():
     parser.add_argument('-d', '--dns',action='store_true', help='Do DNS Lookup of Given Host')
     parser.add_argument('-hp','--honeypot',action='store_true', help='Find Honeypot Probablity for Given Host')
     parser.add_argument('-hs', '--subdomain',action='store_true', help='Enumerate Subdomain for Given Host')
-    parser.add_argument('-C','--cloud',action='store_true', help='Check Site is protected with Cloudflare or not...')
+    parser.add_argument('-wF','--waf',action='store_true', help='Check Site is protected with WAF or not...')
     parser.add_argument('-b', '--grab',action='store_true', help='Grab banner of a Website')
     parser.add_argument('-w', '--whois', action='store_true', help='Whois Lookup of Website')
     parser.add_argument('-sD', '--shareddns',action='store_true',help='Find Shared DNS Server of a Website')
@@ -48,8 +48,14 @@ def main():
         fetch_dns(options.target, cli=True)
     if options.geolookup:   #Geo Lookup
         geoip(options.target, cli=True)
-    if options.cloud:       # Cloud Lookup
-        is_cloudflare(options.target, cli=True)
+    if options.waf:       # Firewall Lookup
+        firewall = enumerate_waf(options.target)
+        if not firewall:
+            print(f"Not Detected on: {options.target}")
+        if isinstance(firewall, list):
+            print(f"Vendors: {', '.join(firewall)}")
+        else:
+            print(firewall)
     if options.reverseip:   # Reverse IP Lookup
         reverseip(options.target, cli=True)
     if options.honeypot:    # Honeypot Lookup
