@@ -48,7 +48,7 @@ def main():
         fetch_dns(options.target, cli=True)
     if options.geolookup:   #Geo Lookup
         geoip(options.target, cli=True)
-    if options.waf:       # Firewall Lookup
+    if options.waf:       # Firewall Lookup Added
         firewall = enumerate_waf(options.target)
         if not firewall:
             print(f"Not Detected on: {options.target}")
