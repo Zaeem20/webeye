@@ -9,7 +9,7 @@ At your Fingertips, just in 3-5 lines of code...
 • ReverseDNS Lookup<br />
 • ReversIP Lookup<br />
 • Banner Grabber<br />
-• Cloudflare Detector<br />
+• Firewall Detector<br />
 • Honeypot Detector (Based on Honeyscore)<br />
 • Pagelinks Extractor<br />
 • Shared DNS Scanner<br />
@@ -40,7 +40,7 @@ grabbed=grab(host=host,schema=schema)
 # check for ports
 ports=scan(host=host, port=1025, start=0, dev_mode = False)
 # cloudflare
-detected=is_cloudflare(host=host, schema=schema)
+detected=enumerate_waf(host=host)
 # honeypot
 honeypot=is_honeypot(host=host)
 
@@ -97,8 +97,8 @@ async def dnslook(target):
 async def reversiplook(target):
     await asyncmanner.reverseip(target)
 
-async def is_cloudflare(target):
-    await asyncmanner.is_cloudflare(target)
+async def enumeratefirewall(target):
+    await asyncmanner.enumerate_firewall(target)
 
 async def is_honeypot(target):
     await asyncmanner.is_honeypot(target)
