@@ -52,10 +52,9 @@ def main():
         firewall = enumerate_waf(options.target)
         if not firewall:
             print(f"Not Detected on: {options.target}")
-        if isinstance(firewall, list):
-            print(f"Vendors: {', '.join(firewall)}")
-        else:
-            print(firewall)
+        if isinstance(firewall, (list, str)):
+            print(f"Vendors: {', '.join(firewall) if isinstance(firewall, list) else firewall}")
+
     if options.reverseip:   # Reverse IP Lookup
         reverseip(options.target, cli=True)
     if options.honeypot:    # Honeypot Lookup
